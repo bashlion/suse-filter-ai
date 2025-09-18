@@ -215,8 +215,8 @@ class Pipeline:
         chat_id = body.get("chat_id", None)
         assistant_message_obj = get_last_assistant_message_obj(body["messages"])
         info = assistant_message_obj.get("usage", {})
-        input_tokens = info.get("prompt_eval_count") or info.get("prompt_tokens") or 0
-        output_tokens = info.get("eval_count") or info.get("completion_tokens") or 0
+        input_tokens = int(info.get("prompt_eval_count") or info.get("prompt_tokens") or 0)
+        output_tokens = int(info.get("eval_count") or info.get("completion_tokens") or 0)
         total_tokens = input_tokens + output_tokens
         if parent := self.chats.get(chat_id, None):
             provider = self.chat_model_provider.get((chat_id, model), "default")
@@ -265,7 +265,8 @@ class Pipeline:
         )
 
         self.metrics["genai_client_usage_tokens"].record(total_tokens, metrics_attributes)
-        self.metrics["genai_client_operation_duration"].record(info.get("total_duration"), metrics_attributes)
+        total_duration = float(info.get("total_duration") or 0)
+        self.metrics["genai_client_operation_duration"].record(total_duration, metrics_attributes)
         self.metrics["genai_requests"].add(1, metrics_attributes)
         self.metrics["genai_completion_tokens"].add(output_tokens, metrics_attributes)
         self.metrics["genai_prompt_tokens"].add(input_tokens, metrics_attributes)
