@@ -134,12 +134,12 @@
             "completionPrice": 0.0001
         },
         "gemma:2b": {
-            "promptPrice": 0.0001,
-            "completionPrice": 0.0001
+            "promptPrice": 1,
+            "completionPrice": 2
         },
         "gemma-2b": {
-            "promptPrice": 0.0001,
-            "completionPrice": 0.0001
+            "promptPrice": 1,
+            "completionPrice": 2
         },
         "gpt-4o": {
             "promptPrice": 0.0005,
